@@ -6,12 +6,12 @@ import torch.nn.functional as F
 class CNNAttentionModel(nn.Module):
     def __init__(self, input_size, fixed_output_size=512, num_classes=2):
         super(CNNAttentionModel, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=(3, 3), padding=1)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=(3, 3), padding=1)
+        self.conv1 = nn.Conv2d(1, 64, kernel_size=(3, 3), padding=1)
+        self.conv2 = nn.Conv2d(64, 128, kernel_size=(3, 3), padding=1)
         self.pool = nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2))
         
         self.fc1 = nn.Linear(fixed_output_size, 128)
-        self.attention = nn.MultiheadAttention(embed_dim=128, num_heads=8)
+        self.attention = nn.MultiheadAttention(embed_dim=128, num_heads=16)
         self.fc2 = nn.Linear(128, num_classes)
     
     def forward(self, x):
@@ -60,7 +60,7 @@ class GenderAudioPredictor:
         return 'male' if predicted.item() == 0 else 'female'
 
 # Usage example:
-model_path = 'audio_gender.pth'
+model_path = 'audio_gender_v2.pth'
 predictor = GenderAudioPredictor(model_path)
 
 audio_file = 'audio.wav'
